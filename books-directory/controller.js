@@ -1,67 +1,40 @@
-const books = require("./books-directory")
+const books = require("./books-directory");
 
-console.log(books, 'books')
+console.log(books, "books");
 
 exports.getAllBooks = (req, res) => {
   res.status(200).json({
-    status: 'success',
+    status: "success",
     result: books.length,
     data: {
       books,
     },
-  })
-}
-
-// exports.getTour = (req, res) => {
-//   // console.log(req.params)
-//   const id = req.params.id * 1
-
-//   const tour = tours.find((el) => el.id === id)
-
-//   // console.log('Tour', tour)
-
-//   if (!tour) {
-//     return res.status(404).json({
-//       status: 'fail',
-//       message: 'Invalid ID',
-//     })
-//   }
-
-//   res.status(200).json({
-//     status: 'success',
-//     data: {
-//       tour,
-//     },
-//   })
-// }
+  });
+};
 
 exports.createBook = (req, res) => {
-  res.send('Done!')
-  const newId = books.slice(-1).id + 1
-  const newTour = Object.assign({ id: newId }, req.body)
-  books.push(newTour)
-}
+  res.send("Done!");
+  const newId = books.slice(-1).id + 1;
+  const newTour = Object.assign({ id: newId }, req.body);
+  books.push(newTour);
+};
 
-exports.updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({ status: 'fail', message: 'Invalid ID' })
-  }
+exports.updateBook = (req, res) => {
+  const id = Number(req.params.id);
+  const index = books.findIndex((book) => book.id === id);
+  const newBook = Object.assign({}, books[index], req.body);
+  books[index] = newBook;
 
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
-      book: '<Updated tour here...>',
+      book: newBook,
     },
-  })
-}
+  });
+};
 
 exports.deleteBook = (req, res) => {
-  if (req.params.id * 1 > books.length) {
-    return res.status(404).json({ status: 'fail', message: 'Invalid ID' })
-  }
-
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  })
-}
+  const id = Number(req.params.id);
+  tours.filter((book) => book.id !== id);
+  res.status(200).send("Book deleted successfully!");
+};
